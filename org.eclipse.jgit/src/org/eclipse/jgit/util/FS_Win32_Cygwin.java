@@ -57,7 +57,7 @@ import java.util.List;
 
 import org.eclipse.jgit.api.errors.JGitInternalException;
 import org.eclipse.jgit.errors.CommandFailedException;
-import org.eclipse.jgit.lib.Constants;
+import org.eclipse.jgit.lib.CoreConfig;
 import org.eclipse.jgit.lib.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -186,14 +186,21 @@ public class FS_Win32_Cygwin extends FS_Win32 {
 	/** {@inheritDoc} */
 	@Override
 	public File findHook(Repository repository, String hookName) {
-		final File gitdir = repository.getDirectory();
-		if (gitdir == null) {
-			return null;
+		final File hookPath = super.findHook(repository, hookName);
+
+		if (hookPath != null && Files.isExecutable(hookPath.toPath()))
+			return hookPath;
+
+		final String outsideHookPath = repository.getConfig()
+				.get(CoreConfig.KEY).getHooksPath();
+		if (outsideHookPath != null) {
+			final Path outsideHookFilePath = java.nio.file.Paths.get(outsideHookPath)
+					.resolve(hookName);
+
+			if (Files.isExecutable(outsideHookFilePath))
+				return outsideHookFilePath.toFile();
 		}
-		final Path hookPath = gitdir.toPath().resolve(Constants.HOOKS)
-				.resolve(hookName);
-		if (Files.isExecutable(hookPath))
-			return hookPath.toFile();
+
 		return null;
 	}
 }

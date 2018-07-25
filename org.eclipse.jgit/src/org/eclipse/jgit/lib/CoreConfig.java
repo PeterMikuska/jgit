@@ -140,6 +140,8 @@ public class CoreConfig {
 
 	private final String attributesfile;
 
+	private final String hooksPath;
+
 	/**
 	 * Options for symlink handling
 	 *
@@ -177,6 +179,8 @@ public class CoreConfig {
 				ConfigConstants.CONFIG_KEY_EXCLUDESFILE);
 		attributesfile = rc.getString(ConfigConstants.CONFIG_CORE_SECTION,
 				null, ConfigConstants.CONFIG_KEY_ATTRIBUTESFILE);
+		hooksPath = rc.getString(ConfigConstants.CONFIG_CORE_SECTION, null,
+				ConfigConstants.CONFIG_KEY_HOOKS_PATH);
 	}
 
 	/**
@@ -223,5 +227,15 @@ public class CoreConfig {
 	 */
 	public String getAttributesFile() {
 		return attributesfile;
+	}
+
+	/**
+	 * Get path of hooks (stored outside of git directory)
+	 *
+	 * @return path of hooks
+	 * @since 2.9
+	 */
+	public String getHooksPath() {
+		return hooksPath;
 	}
 }

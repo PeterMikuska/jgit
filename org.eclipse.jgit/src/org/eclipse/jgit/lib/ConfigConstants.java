@@ -166,6 +166,9 @@ public class ConfigConstants {
 	/** The "filemode" key */
 	public static final String CONFIG_KEY_FILEMODE = "filemode";
 
+	/** The "hooksPath key" */
+	public static final String CONFIG_KEY_HOOKS_PATH = "hooksPath";
+
 	/** The "logallrefupdates" key */
 	public static final String CONFIG_KEY_LOGALLREFUPDATES = "logallrefupdates";
 
